@@ -24,6 +24,8 @@ This code will do:
   - deploy ubuntu18
   - install kubuntu-desktop
   - copy settings file for XRDP
+  - download the https://bitcoin.org/bin/bitcoin-core-0.19.1/bitcoin-0.19.1-x86_64-linux-gnu.tar.gz
+  - extract to /home/user-01/
 
 After what you should add user account and set password:
 

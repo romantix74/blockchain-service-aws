@@ -41,7 +41,7 @@ resource "aws_instance" "test" {
     }
 
     source      = "xrdp-conf/xrdp-color-config.txt"
-    destination = "/home/ubuntu/xrdp-color-config.txt"
+    destination = "/tmp/xrdp-color-config.txt"
   }
 
   provisioner "remote-exec" {
@@ -53,12 +53,17 @@ resource "aws_instance" "test" {
     }
 
     inline = [
+      "sleep 10",
       "sudo apt-get -y -q update",
       "sudo apt-get -y -q upgrade",
 	    "sudo apt-get -y -q install kubuntu-desktop",
-	    "sudo apt-get -y -q install mc",
+	    "sudo apt-get -y -q install xrdp",
+      "sudo apt-get -y -q install mc",
 	    "sudo useradd -m user-01",
-      "sudo mv /home/ubuntu/xrdp-color-config.txt /etc/polkit-1/localauthority/50-local.d/45-allow.colord.pkla"
+      "sudo mv /tmp/xrdp-color-config.txt /etc/polkit-1/localauthority/50-local.d/45-allow.colord.pkla",
+      "wget https://bitcoin.org/bin/bitcoin-core-0.19.1/bitcoin-0.19.1-x86_64-linux-gnu.tar.gz -O /tmp/bitcoin.tar.gz",
+      "sudo tar -xzvf /tmp/bitcoin.tar.gz -C /home/user-01/",
+      "sudo chmod 777 /home/user-01/bitcoin* -R",
     ]
   }
 

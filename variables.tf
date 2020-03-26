@@ -20,7 +20,7 @@ variable "aws_availability_zone" {
 
 variable "test_instance_type" {
   description = "instance type of test"
-  default     = "t3.micro"
+  default     = "t3.medium"
 }
 
 
