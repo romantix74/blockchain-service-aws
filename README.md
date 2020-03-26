@@ -18,7 +18,7 @@ Create file with AWS credentials like:
 ## Run
 
     terraform plan
-    terraform check
+    terraform apply
 
 This code will do:
   - deploy ubuntu18
