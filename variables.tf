@@ -1,4 +1,9 @@
-variable "key_name" {
+variable "ssh_key_file" {
+  description = "AWS ssh key for provisioning by scripts"
+  default     = "ssh_key.pem"
+}
+
+variable "ssh_key_name" {
   description = "AWS ssh key"
   default     = "ssh_key"
 }
@@ -15,7 +20,7 @@ variable "aws_availability_zone" {
 
 variable "test_instance_type" {
   description = "instance type of test"
-  default     = "t2.micro"
+  default     = "t3.micro"
 }
 
 
@@ -87,9 +92,11 @@ data "aws_ami" "latest_ubuntu_18" {
   owners = ["099720109477"] # Canonical
 }
 
+### output #######
 output "image_id" {
   value = "${data.aws_ami.latest_ubuntu_18.id}"
 }
 
-
-
+output "instance_ips" {
+  value = ["${aws_instance.test.*.public_ip}"]
+}

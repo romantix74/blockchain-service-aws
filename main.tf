@@ -7,11 +7,22 @@ provider "aws" {
 ############################################
 #--- instances---
 ############################################
+# variable "ssh_connection" {
+#     type = map
+#     default = {
+#       type     = "ssh"
+#       user     = "ubuntu"
+#       #password = "${var.root_password}"
+#       private_key = file("${var.ssh_key_file}")
+#       host     = self.public_ip
+#     }
+# }
+
 
 resource "aws_instance" "test" {
-  ami           = data.aws_ami.latest_ubuntu_18.id 
+  ami           = data.aws_ami.latest_ubuntu_18.id
   instance_type = var.test_instance_type
-  key_name = var.key_name
+  key_name = var.ssh_key_name
   vpc_security_group_ids = [aws_security_group.test_sg.id]
   availability_zone      = var.aws_availability_zone
   source_dest_check      = false
@@ -19,16 +30,45 @@ resource "aws_instance" "test" {
   root_block_device {
     delete_on_termination = "true"
   }
-  
+
+  # Copies the xrdp-color-config.txt file to /etc/myapp.conf
+  provisioner "file" {
+    connection {
+      type     = "ssh"
+      user     = "ubuntu"
+      private_key = file("${var.ssh_key_file}")
+      host     = self.public_ip
+    }
+
+    source      = "xrdp-conf/xrdp-color-config.txt"
+    destination = "/home/ubuntu/xrdp-color-config.txt"
+  }
+
   provisioner "remote-exec" {
+    connection {
+      type     = "ssh"
+      user     = "ubuntu"
+      private_key = file("${var.ssh_key_file}")
+      host     = self.public_ip
+    }
+
     inline = [
-      "apt update -y",
-      "apt uprgade -y",
-	  "apt install kubuntu-desktop -y",
-	  "apt install mc -y",
-	  "useradd -m ro",
+      "sudo apt-get -y -q update",
+      "sudo apt-get -y -q upgrade",
+	    "sudo apt-get -y -q install kubuntu-desktop",
+	    "sudo apt-get -y -q install mc",
+	    "sudo useradd -m user-01",
+      "sudo mv /home/ubuntu/xrdp-color-config.txt /etc/polkit-1/localauthority/50-local.d/45-allow.colord.pkla"
     ]
   }
+
+
+
+  # connection {
+  #   type = "ssh"
+  #   user = "ubuntu"
+  #   private_key = file("${var.ssh_key_file}")
+  # }
 
   tags = {
     Name  = "test"
