@@ -2,8 +2,7 @@
 
 ## First step
 
-
-Create file with AWS credentials like^
+Create file with AWS credentials like:
     variable "access_key" {
       description = "AWS access key"
       default     = "YOUR_ACCESS_KEY"
