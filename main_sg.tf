@@ -1,4 +1,3 @@
-
 #### rules #############################
 
 resource "aws_security_group_rule" "mgmt_rule" {

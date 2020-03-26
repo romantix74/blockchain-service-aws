@@ -1,6 +1,3 @@
-# Access Key ID: AKIAIR7UYDJ26VJW56HA
-#Secret Access Key: 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
-
 variable "key_name" {
   description = "AWS ssh key"
   default     = "ssh_key"
