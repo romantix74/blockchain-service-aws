@@ -36,7 +36,7 @@ variable "mgmt_ip" {
 ##############################
 variable "rdp_ip" {
   description = "rdp access for mgmt"
-  default     = ["85.140.0.0/15"]  # mts
+  default     = ["0.0.0.0/0"]  # mts
 }
 
 ##############################
